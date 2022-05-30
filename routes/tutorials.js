@@ -40,10 +40,13 @@ const verifyJWT = async (req, res, next) => {
 const validateCreateToken = async (req, res, next) => {
   try {
     const createToken = req.headers['create_token'];
-    authenticationService.verifyCreateJWT(createToken);
+    const token = authenticationService.verifyCreateJWT(createToken);
+    if (token === null) {
+      return res.sendStatus(403);
+    }
   } catch (e) {
     console.error(e, e.message);
-    res.sendStatus(403);
+    return res.sendStatus(403);
   }
   next();
 };
