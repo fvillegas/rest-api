@@ -2,10 +2,11 @@ const crypto = require('crypto');
 const {models} = require("../sequelize");
 
 class TutorialsService {
-  fetchByUUID = async () => {
+  fetchByUUID = async (uuid) => {
+    return await models.tutorial.findOne({where: {uuid}});
   };
   fetchAll = async () => {
-    return await models.tutorial.findAll();
+    return await models.tutorial.findAll({where: {deletedAt: null}});
   };
   create = async (title, description, videoUrl) => {
     return await models.tutorial.create({
@@ -15,7 +16,13 @@ class TutorialsService {
       videoUrl
     });
   };
-  delete = async (logical = true) => {
+  delete = async (uuid, logical = true) => {
+    if (logical) {
+      await models.tutorial.update(
+        {deletedAt: new Date().getTime()},
+        {where: {uuid}});
+      return this.fetchByUUID(uuid);
+    }
   };
   deleteMany = async (logical = true) => {
   };

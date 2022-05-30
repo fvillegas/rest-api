@@ -96,7 +96,8 @@ router.delete('/mass_delete', verifyJWT, isAdmin, async (req, res) => {
 
 // DELETE - /tutorials/:id - Tutorial delete
 router.delete('/:uuid', verifyJWT, isAdmin, async (req, res) => {
-  res.send('DELETE /tutorials/:uuid');
+  const tutorial = await tutorialsService.delete(req.params.uuid);
+  res.send(mapCleanTutorialData(tutorial));
 });
 
 module.exports = router;
