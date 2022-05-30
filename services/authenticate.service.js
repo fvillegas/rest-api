@@ -23,11 +23,24 @@ class AuthenticateService {
     return jwt.sign({email}, token_secret, {expiresIn: '1h'});
   }
   verifyJWT = (token) => {
-    jwt.verify(token, token_secret, (err, user) => {
+    return jwt.verify(token, token_secret, (err, data) => {
       if (err) {
         return null;
       }
-      return user;
+      return data;
+    });
+  }
+  generateCreateJWT = () => {
+    return jwt.sign({
+      timestamp: new Date().getTime()
+    }, token_secret, {expiresIn: '5m'});
+  }
+  verifyCreateJWT = (token) => {
+    return jwt.verify(token, token_secret, (err, data) => {
+      if (err) {
+        return null;
+      }
+      return data;
     });
   }
 }

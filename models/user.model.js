@@ -39,6 +39,10 @@ module.exports = async (sequelize) => {
     lastname: {
       allowNull: false,
       type: DataTypes.STRING
+    },
+    role: {
+      allowNull: false,
+      type: DataTypes.STRING
     }
   });
   await User.sync();
